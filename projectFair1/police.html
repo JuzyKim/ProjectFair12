@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click to Reveal Answer</title>
+    <style>
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      .button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .answer {
+        display: none;
+        margin-top: 20px;
+        color: #007bff;
+      }
+      .revealed {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="button" onclick="revealAnswer()">
+        Click to Reveal Answer
+      </button>
+      <div class="answer" id="answer">The answer is revealed!</div>
+    </div>
+
+    <script>
+      function revealAnswer() {
+        var answer = document.getElementById("answer");
+        answer.classList.add("revealed");
+      }
+    </script>
+  </body>
+</html>

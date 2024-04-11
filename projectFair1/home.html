@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="home.css" />
+    <style>
+      /* styles.css */
+
+      /* Common styles */
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        transition: background-color 0.3s, color 0.3s; /* Added color transition */
+      }
+
+      /* Dark mode */
+      body.dark-mode {
+        background-color: #000000; /* Dark background */
+        color: rgba(255, 171, 171, 0.75); /* Pink color for text */
+      }
+
+      /* Light mode */
+      body.light-mode {
+        background: linear-gradient(#ffababbf, rgba(240, 240, 240, 0.75)),
+          url("bg.jpg"); /* Pink background */
+        color: #333; /* Black color for text */
+      }
+
+      .banner {
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .navbar {
+        width: 85%;
+        margin: auto;
+        padding: 35px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center; /* Align logo and sidebar button vertically */
+      }
+
+      .logo p {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: inherit; /* Inherit color from parent */
+        margin-right: 20px; /* Add margin to separate logo and sidebar button */
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit; /* Inherit color from parent */
+      }
+
+      li {
+        list-style-type: none;
+      }
+
+      .navbar ul li {
+        display: inline-block;
+        margin: 0 20px;
+        position: relative;
+      }
+
+      .navbar ul li a {
+        text-transform: uppercase;
+        color: inherit; /* Inherit color from parent */
+      }
+
+      .navbar ul li::after {
+        content: "";
+        height: 3px;
+        width: 0;
+        position: absolute;
+        background: #b96ac9;
+        left: 0;
+        bottom: -10px;
+        transition: 0.5s;
+      }
+
+      .navbar ul li:hover::after {
+        width: 100%;
+      }
+
+      /* Button styles */
+      .mode-toggle-btn {
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: none;
+        padding: 0;
+        margin-right: 10px; /* Adjust margin to place closer to navbar */
+      }
+
+      .mode-toggle-btn img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        transition: transform 0.3s;
+      }
+
+      .mode-toggle-btn:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Sidebar styles */
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+
+      .sidebar a {
+        padding: 10px 15px;
+        font-size: 25px;
+        color: #b96ac9;
+        display: block;
+        transition: 0.3s;
+        text-decoration: none;
+      }
+
+      .sidebar a.closebtn {
+        position: absolute;
+        top: 0;
+      }
+
+      .content {
+        transition: margin-left 0.5s;
+        padding: 16px;
+      }
+      .open-btn {
+        cursor: pointer;
+        position: relative; /* Change position to relative */
+        top: -5px; /* Adjust the vertical position */
+        padding: 0;
+        border: none;
+        background: none;
+        outline: none;
+      }
+      .open-btn img {
+        align-items: center;
+        width: 50px;
+        height: 60px;
+      }
+      .wrapper {
+        position: fixed;
+        bottom: 50px;
+        right: -370px;
+        max-width: 345px;
+        width: 100%;
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px 25px 22px;
+        transition: right 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      .wrapper.show {
+        right: 20px;
+      }
+      .wrapper header {
+        display: flex;
+        align-items: center;
+        column-gap: 15px;
+      }
+      header i {
+        color: #4070f4;
+        font-size: 32px;
+      }
+      header h2 {
+        color: #4070f4;
+        font-weight: 500;
+      }
+      .wrapper .data {
+        margin-top: 16px;
+      }
+      .wrapper .data p {
+        color: #333;
+        font-size: 16px;
+      }
+      .data p a {
+        color: #4070f4;
+        text-decoration: none;
+      }
+      .data p a:hover {
+        text-decoration: underline;
+      }
+      .wrapper .buttons {
+        margin-top: 16px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .buttons .button {
+        border: none;
+        color: #fff;
+        padding: 8px 0;
+        border-radius: 4px;
+        background: #4070f4;
+        cursor: pointer;
+        width: calc(100% / 2 - 10px);
+        transition: all 0.2s ease;
+      }
+      .buttons #acceptBtn:hover {
+        background-color: #034bf1;
+      }
+      #declineBtn {
+        border: 2px solid #4070f4;
+        background-color: #fff;
+        color: #4070f4;
+      }
+      #declineBtn:hover {
+        background-color: #4070f4;
+        color: #fff;
+      }
+      /* body {
+        background: #191828;
+        color: #efedef;
+        font-family: "Roboto", Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: 0.01em;
+        line-height: 1.6em;
+        margin: 0;
+        padding: 100px;
+      }
+      h1 {
+        font-size: 40px;
+        line-height: 0.8em;
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .made-with {
+        background: #fd264f;
+        color: #fff;
+        display: block;
+        font-size: 12px;
+        line-height: 1em;
+        margin: 0;
+        padding: 5px 110px;
+        position: fixed;
+        top: 20px;
+        right: -100px;
+        text-align: center;
+        text-decoration: none;
+        transform: rotate(45deg);
+      }
+      .documentation {
+        color: #fd264f;
+      }
+      button:focus,
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+      }
+
+      .tabs {
+        display: block;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        -moz-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin: 0;
+        overflow: hidden;
+      }
+      .tabs [class^="tab"] label,
+      .tabs [class*=" tab"] label,
+      .tabs .tab-3 [type="radio"]label {
+        color: #efedef;
+        cursor: pointer;
+        display: block;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1em;
+        padding: 2rem 0;
+        text-align: center;
+      }
+      .tabs [class^="tab"] [type="radio"],
+      .tabs [class*=" tab"] [type="radio"],
+      .tabs .tab-3 [type="radio"] {
+        border-bottom: 1px solid rgba(239, 237, 239, 0.5);
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        display: block;
+        width: 100%;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+      .tabs [class^="tab"] [type="radio"]:hover,
+      .tabs [class^="tab"] [type="radio"]:focus,
+      .tabs [class*=" tab"] [type="radio"]:hover,
+      .tabs [class*=" tab"] [type="radio"]:focus,
+      .tabs .tab-3 [type="radio"]:hover,
+      .tabs .tab-3 [type="radio"]:focus {
+        border-bottom: 1px solid #fd264f;
+      }
+      .tabs [class^="tab"] [type="radio"]:checked,
+      .tabs [class*=" tab"] [type="radio"]:checked,
+      .tabs .tab-3 [type="radio"]:checked {
+        border-bottom: 2px solid #fd264f;
+      }
+      .tabs [class^="tab"] [type="radio"]:checked + div,
+      .tabs [class*=" tab"] [type="radio"]:checked + div,
+      .tabs .tab-3 [type="radio"]:checked + div {
+        opacity: 1;
+      }
+      .tabs [class^="tab"] [type="radio"] + div,
+      .tabs [class*=" tab"] [type="radio"] + div,
+      .tabs .tab-3 [type="radio"] + div {
+        display: block;
+        opacity: 0;
+        padding: 2rem 0;
+        width: 90%;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+      .tabs .tab-2 {
+        width: 34%;
+      }
+      .tabs .tab-2 [type="radio"] + div {
+        width: 200%;
+        margin-left: 200%;
+      }
+      .tabs .tab-2 [type="radio"]:checked + div {
+        margin-left: 0;
+      }
+      .tabs .tab-2:last-child [type="radio"] + div {
+        margin-left: 100%;
+      }
+      .tabs .tab-2:last-child [type="radio"]:checked + div {
+        margin-left: -100%;
+      }
+      .tabs .tab-3 {
+        width: 33%;
+      }
+      .tabs .tab-3 [type="radio"] + div {
+        width: 200%;
+        margin-left: 200%;
+      }
+      .tabs .tab-3 [type="radio"]:checked + div {
+        margin-left: 0;
+      }
+      .tabs .tab-3:last-child [type="radio"] + div {
+        margin-left: 100%;
+      }
+      .tabs .tab-3:last-child [type="radio"]:checked + div {
+        margin-left: -100%;
+      } */
+    </style>
+  </head>
+  <body class="light-mode">
+    <!-- Default mode is light -->
+    <div class="banner">
+      <div class="navbar">
+        <div class="logo" style="position: absolute"><p>Save</p></div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="facts.html">Facts</a></li>
+          <li><a href="feedbacks.html">Write us</a></li>
+          <li><a href="chat.html">Physiologist</a></li>
+          <li><a href="police1.html">Policy</a></li>
+        </ul>
+
+        <button class="mode-toggle-btn" onclick="toggleDarkMode()">
+          <img src="night_9081564.png" alt="" />
+        </button>
+
+        <button class="open-btn" onclick="openSidebar()">
+          <img src="menu_11386663.png" alt="Sidebar Icon" />
+        </button>
+      </div>
+      <div class="out-wrap">
+        <ul id="tabs" class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#home" aria-controls="home" role="tab" data-toggle="tab"
+              >First Law</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#profile"
+              aria-controls="profile"
+              role="tab"
+              data-toggle="tab"
+              >Second Law</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#messages"
+              aria-controls="messages"
+              role="tab"
+              data-toggle="tab"
+              >Third Law</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#settings"
+              aria-controls="settings"
+              role="tab"
+              data-toggle="tab"
+              >Fourth Law</a
+            >
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="home">
+            Criminalization of violence, namely criminal liability for beatings
+            and minor injury to health (so far they are in the Code of
+            Administrative Offenses); Classifying them as criminal offenses of
+            public prosecution; Tougher penalties and exclusion of
+            reconciliation of the parties for all forms of violence
+            against children.
+          </div>
+          <div role="tabpanel" class="tab-pane" id="profile">
+            In 2017, domestic violence was decriminalized in Kazakhstan:
+            beatings and minor damage to health, such as bruises, bruises and
+            fractures of limbs, were transferred from the criminal code to the
+            administrative one. After the murder of Saltanat Nukenova,
+            Kazakhstanis again began to draw the attention of the authorities to
+            the problem of domestic violence in the country with special
+            activity. On the Otinish website.kz launched an open letter to
+            Kassym-Jomart Tokayev, in which Kazakhstanis demanded tougher
+            penalties for domestic violence. It was signed by more than 150
+            thousand people.
+          </div>
+          <div role="tabpanel" class="tab-pane" id="messages">
+            In April 2024, Kazakhstani activists and human rights defenders
+            launched a campaign "Write a letter to Parliament" with a request to
+            send a letter supporting the law to the Senate. The authors of the
+            letter were human rights activist Khalida Azhigulova, director of
+            Yerkindik Kanaty Elena Shvetsova, Saltanat Nukenova's brother Aitbek
+            Amangeldy and others. More than five thousand Kazakhstanis supported
+            the action and wrote a letter to the Senate.
+          </div>
+          <div role="tabpanel" class="tab-pane" id="settings">
+            In addition, Kazakhstani civil society activists organized rallies
+            in Germany, Italy, Lithuania and the United States in support of the
+            criminalization of domestic violence in Kazakhstan. Thanks to the
+            joint efforts of civil society, a number of international media and
+            organizations have written about the problem of domestic violence in
+            Kazakhstan: Deutsche Welle, Human Rights Watch, Dozhd TV Channel,
+            Reuters and many others.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()"
+        >&#10005;</a
+      >
+      <a href="#">Home</a>
+      <a href="facts.html">Facts</a>
+      <a href="feedbacks.html ">Write us</a>
+      <a href="chat.html">Physiology</a>
+      <a href="police1.html">Policy</a>
+
+      <div class="wrapper">
+        <header>
+          <i class="bx bx-cookie"></i>
+          <h2>Cookies Consent</h2>
+        </header>
+        <div class="data">
+          <p>
+            This website use cookies to help you have a superior and more
+            relevant browsing experience on the website.
+            <a href="#"> Read more...</a>
+          </p>
+        </div>
+        <div class="buttons">
+          <button class="button" id="acceptBtn">Accept</button>
+          <button class="button" id="declineBtn">Decline</button>
+        </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+      <link
+        href="https://fonts.googleapis.com/css?family=Josefin+Sans"
+        rel="stylesheet"
+      />
+      <script
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"
+      ></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+      <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous"
+      />
+      <script src="https://use.fontawesome.com/aa95071b26.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+      <!-- <h1>
+      Animated transition tabs<br />
+      with checkboxes
+    </h1> -->
+
+      <!-- <div class="tabs">
+      <div class="tab-2">
+        <label for="tab2-1">One</label>
+        <input id="tab2-1" name="tabs-two" type="radio" checked="checked" />
+        <div>
+          <h4>Tab One</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+            consequat id velit quis vestibulum. Nam id orci eu urna mollis
+            porttitor. Nunc nisi ante, gravida at velit eu, aliquet sodales dui.
+            Sed laoreet condimentum nisi a egestas.
+            <a
+              class="documentation"
+              href="https://flkt.mx/pitaya/componentes.html#pestanias"
+              >Documentación en español</a
+            >.
+          </p>
+          <p>
+            Donec interdum ante ut enim consequat, quis varius nulla dapibus.
+            Vivamus mollis fermentum augue a varius. Vestibulum in sapien at
+            lectus gravida lobortis vulputate sed metus. Duis scelerisque justo
+            et maximus efficitur. Donec eu eleifend quam. Curabitur aliquet
+            commodo sapien eget vestibulum. Vestibulum ante ipsum primis in
+            faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum
+            vel aliquet nunc, finibus posuere lorem. Suspendisse consectetur
+            volutpat est ut ornare.
+          </p>
+        </div>
+      </div>
+      <div class="tab-2">
+        <label for="tab2-2">Two</label>
+        <input id="tab2-2" name="tabs-two" type="radio" />
+        <div>
+          <h4>Tab Two</h4>
+          <p>
+            Quisque sit amet turpis leo. Maecenas sed dolor mi. Pellentesque
+            varius elit in neque ornare commodo ac non tellus. Mauris id iaculis
+            quam. Donec eu felis quam. Morbi tristique lorem eget iaculis
+            consectetur. Class aptent taciti sociosqu ad litora torquent per
+            conubia nostra, per inceptos himenaeos. Aenean at tellus eget risus
+            tempus ultrices. Nam condimentum nisi enim, scelerisque faucibus
+            lectus sodales at.
+          </p>
+        </div>
+      </div>
+       </div>
+      <div class="tab-3">
+        <label for="tab3-3">Three</label>
+        <input id="tab3-3" name="tabs-three" type="radio" />
+        <div>
+          <h4>Tab Three</h4>
+          <p>Content for Tab Three</p>
+        </div>
+      </div>
+    </div> -->
+
+      <script src="home.js"></script>
+    </div>
+  </body>
+</html>
